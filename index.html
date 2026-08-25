@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Committee Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <h2>CommitteeHub</h2>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" onclick="showPage('dashboard')">
+                    <i class="fas fa-home"></i> Dashboard
+                </button>
+                <button class="nav-item" onclick="showPage('donations')">
+                    <i class="fas fa-gift"></i> Donations
+                </button>
+                <button class="nav-item" onclick="showPage('donors')">
+                    <i class="fas fa-users"></i> Donors
+                </button>
+                <button class="nav-item" onclick="showPage('receipts')">
+                    <i class="fas fa-receipt"></i> Receipts
+                </button>
+                <button class="nav-item" onclick="showPage('expenses')">
+                    <i class="fas fa-money-bill"></i> Expenses
+                </button>
+                <button class="nav-item" onclick="showPage('reports')">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+                <button class="nav-item" onclick="showPage('members')">
+                    <i class="fas fa-user-tie"></i> Members
+                </button>
+                <button class="nav-item" onclick="showPage('events')">
+                    <i class="fas fa-calendar"></i> Events
+                </button>
+                <button class="nav-item" onclick="showPage('chat')">
+                    <i class="fas fa-comments"></i> Chat
+                </button>
+                <button class="nav-item" onclick="showPage('gallery')">
+                    <i class="fas fa-images"></i> Gallery
+                </button>
+                <button class="nav-item" onclick="showPage('announcements')">
+                    <i class="fas fa-bullhorn"></i> Announcements
+                </button>
+                <button class="nav-item" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </nav>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-title">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=User" alt="User">
+                        <span>Committee Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Pages Container -->
+            <div class="pages-container">
+                <!-- Dashboard -->
+                <div id="dashboard" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-gift"></i>
+                            <h3>Total Donations</h3>
+                            <p class="stat-value">₹<span id="totalDonations">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Total Donors</h3>
+                            <p class="stat-value" id="totalDonors">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-money-bill"></i>
+                            <h3>Total Expenses</h3>
+                            <p class="stat-value">₹<span id="totalExpenses">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Committee Members</h3>
+                            <p class="stat-value" id="totalMembers">0</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <h3>Recent Donations</h3>
+                            <ul id="recentDonations"></ul>
+                        </div>
+                        <div class="card">
+                            <h3>Upcoming Events</h3>
+                            <ul id="upcomingEvents"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Donations -->
+                <div id="donations" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('donation')">
+                            <i class="fas fa-plus"></i> Add Donation
+                        </button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Donor</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donationsTable"></tbody>
+                    </table>
+                </div>
+
+                <!-- Donors -->
+                <div id="donors" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('donor')">
+                            <i class="fas fa-plus"></i> Add Donor
+                        </button>
+                    </div>
+                    <div class="grid-list" id="donorsList"></div>
+                </div>
+
+                <!-- Receipts -->
+                <div id="receipts" class="page">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Receipt No.</th>
+                                <th>Donor</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receiptsTable"></tbody>
+                    </table>
+                </div>
+
+                <!-- Expenses -->
+                <div id="expenses" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('expense')">
+                            <i class="fas fa-plus"></i> Add Expense
+                        </button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesTable"></tbody>
+                    </table>
+                </div>
+
+                <!-- Reports -->
+                <div id="reports" class="page">
+                    <div class="reports-grid">
+                        <div class="card">
+                            <h3>Financial Summary</h3>
+                            <p>Total Income: ₹<span id="reportIncome">0</span></p>
+                            <p>Total Expenses: ₹<span id="reportExpenses">0</span></p>
+                            <p>Balance: ₹<span id="reportBalance">0</span></p>
+                        </div>
+                        <div class="card">
+                            <h3>Donation Statistics</h3>
+                            <p>Total Donors: <span id="reportDonors">0</span></p>
+                            <p>Average Donation: ₹<span id="reportAverage">0</span></p>
+                            <p>Total Donations: ₹<span id="reportTotal">0</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Members -->
+                <div id="members" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('member')">
+                            <i class="fas fa-plus"></i> Add Member
+                        </button>
+                    </div>
+                    <div class="grid-list" id="membersList"></div>
+                </div>
+
+                <!-- Events -->
+                <div id="events" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('event')">
+                            <i class="fas fa-plus"></i> Add Event
+                        </button>
+                    </div>
+                    <div class="grid-list" id="eventsList"></div>
+                </div>
+
+                <!-- Chat -->
+                <div id="chat" class="page">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages"></div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chatInput" placeholder="Type a message..." />
+                            <button class="btn btn-primary" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery -->
+                <div id="gallery" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('photo')">
+                            <i class="fas fa-upload"></i> Upload Photo
+                        </button>
+                    </div>
+                    <div class="gallery-grid" id="galleryGrid"></div>
+                </div>
+
+                <!-- Announcements -->
+                <div id="announcements" class="page">
+                    <div class="page-header">
+                        <button class="btn btn-primary" onclick="showForm('announcement')">
+                            <i class="fas fa-bullhorn"></i> New Announcement
+                        </button>
+                    </div>
+                    <div class="announcements-list" id="announcementsList"></div>
+                </div>
+
+                <!-- Settings -->
+                <div id="settings" class="page">
+                    <div class="card">
+                        <h3>Committee Settings</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Committee Name</label>
+                                <input type="text" id="committeeName" value="My Committee" />
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="committeeEmail" value="committee@example.com" />
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" id="committeePhone" value="+91 9876543210" />
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveSettings()">
+                                Save Settings
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="formModal" class="modal" onclick="closeForm()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeForm()">&times;</button>
+            <form id="dataForm" onsubmit="submitForm(event)">
+                <div id="formFields"></div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
